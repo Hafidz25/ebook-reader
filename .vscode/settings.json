@@ -1,0 +1,4 @@
+{
+  "terminal.integrated.gpuAcceleration": "off",
+  "vscode_vibrancy.imports": ["/path/to/file"]
+}
