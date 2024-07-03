@@ -91,7 +91,8 @@ export default function DetailBook({ params }: { params: { id: string } }) {
               <CardTitle>{books?.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              {/* {books?.content && <PdfViewer url={books?.content} />} */}
+              {/* {books?.content && <PdfAnnotator url={books?.content} />} */}
+              {/* {books?.content && <PdfViewer fileUrl={books?.content} />} */}
               <div className="flex gap-3">
                 <Link
                   //@ts-ignore
