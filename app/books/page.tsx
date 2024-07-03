@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Book, MoveRight } from "lucide-react";
+import { Book, MoveRight, FileText, FileWarning } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
@@ -21,10 +21,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import ImageUpload from "@/components/custom/file-uploader";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+
+import { useRouter } from "next/navigation";
 
 interface Books {
+  id: string;
   title: string;
   content: string;
 }
@@ -34,7 +37,9 @@ export default function Books() {
   const [books, setBooks] = useState<Books[]>([]);
   const [load, setLoad] = useState(false);
 
-  console.log(books);
+  const router = useRouter();
+
+  // console.log(books);
 
   useEffect(() => {
     fetch("/api/books", { method: "GET" })
@@ -56,8 +61,14 @@ export default function Books() {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
+      .then((data) => {
+        location.reload();
+        toast.success("Book has been added");
+      })
+      .catch((error) => {
+        console.error(error);
+        toast.error("Something went wrong");
+      });
   };
 
   return (
@@ -127,7 +138,29 @@ export default function Books() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="flex gap-3"></div>
+            {load ? (
+              <div className="flex gap-3">
+                {books.length ? (
+                  <div className="flex gap-3">
+                    {books.map((book) => (
+                      <Link
+                        href={`/books/${book.id}`}
+                        className="flex flex-col gap-3 items-center border-2 border-slate-200 hover:bg-slate-100 transition duration-300 min-w-32 min-h-36 rounded-lg py-6 px-4"
+                      >
+                        {book.content ? (
+                          <FileText className="w-16 h-16" />
+                        ) : (
+                          <FileWarning className="w-16 h-16" />
+                        )}
+                        <div>{book.title}</div>
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  <div>No Result</div>
+                )}
+              </div>
+            ) : null}
           </CardContent>
         </Card>
       </div>
