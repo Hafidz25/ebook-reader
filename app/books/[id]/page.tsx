@@ -93,7 +93,12 @@ export default function DetailBook({ params }: { params: { id: string } }) {
             <CardContent>
               {/* {books?.content && <PdfAnnotator url={books?.content} />} */}
               {/* {books?.content && <PdfViewer fileUrl={books?.content} />} */}
-              <div className="flex gap-3">
+              <iframe
+                className="w-full h-[600px]"
+                src={books?.content}
+                frameBorder="0"
+              ></iframe>
+              {/* <div className="flex gap-3">
                 <Link
                   //@ts-ignore
                   href={books?.content}
@@ -107,7 +112,7 @@ export default function DetailBook({ params }: { params: { id: string } }) {
                   )}
                   <div>Open PDF</div>
                 </Link>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
         ) : null}
