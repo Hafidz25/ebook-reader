@@ -1,13 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ["img.freepik.com", "veterinaire-tour-hassan.com"],
-    },
-    webpack: (config) => {
+    webpack: (config, { isServer }) => {
+        if (!isServer) {
+            config.resolve.fallback.fs = false;
+        }
+
         config.module.rules.push({
-            test: /\.node/,
-            use: "raw-loader",
+            test: /pdf\.worker\.(min\.)?js/,
+            use: 'file-loader',
         });
+
         return config;
     },
 };

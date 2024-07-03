@@ -1,35 +1,23 @@
-// components/PdfViewer.tsx
 import React from "react";
-import { Worker, Viewer, WorkerProps } from "@react-pdf-viewer/core";
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+import { Document, Page, pdfjs } from "react-pdf";
+import pdfjsVersion from "pdfjs-dist/package.json";
 
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
-import { pageNavigationPlugin } from "@react-pdf-viewer/page-navigation";
-import { zoomPlugin } from "@react-pdf-viewer/zoom";
-import { pdfjs } from "react-pdf";
+const PdfViewer: React.FC<{ fileUrl: string }> = ({ fileUrl }) => {
+  // Set the worker URL using the version from pdfjs-dist
+  const workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
-interface PdfViewerProps {
-  fileUrl: string;
-}
-
-const PdfViewer: React.FC<PdfViewerProps> = ({ fileUrl }) => {
-  const defaultLayoutPluginInstance = defaultLayoutPlugin();
-  const pageNavigationPluginInstance = pageNavigationPlugin();
-  const zoomPluginInstance = zoomPlugin();
+  pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
   return (
-    <div style={{ height: "750px" }}>
-      <Worker workerUrl="/pdf-worker.js">
-        <Viewer
-          fileUrl={fileUrl}
-          plugins={[
-            defaultLayoutPluginInstance,
-            pageNavigationPluginInstance,
-            zoomPluginInstance,
-          ]}
-        />
-      </Worker>
+    <div>
+      <div style={{ height: "750px" }}>
+        <Document
+          file={fileUrl}
+          onLoadSuccess={() => console.log("PDF loaded successfully")}
+        >
+          <Page pageNumber={1} />
+        </Document>
+      </div>
     </div>
   );
 };

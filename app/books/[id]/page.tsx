@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { Book, ChevronLeft, FileText, FileWarning } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -13,20 +14,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-
+const PdfViewer = dynamic(() => import("@/components/custom/pdf-viewer"), {
+  ssr: false,
+});
 import { useRouter } from "next/navigation";
-import PdfAnnotator from "@/components/custom/pfd-annotator";
-import PdfViewer from "@/components/custom/pdf-viewer";
 
 interface Books {
   id: string;
@@ -91,13 +83,12 @@ export default function DetailBook({ params }: { params: { id: string } }) {
               <CardTitle>{books?.title}</CardTitle>
             </CardHeader>
             <CardContent>
-              {/* {books?.content && <PdfAnnotator url={books?.content} />} */}
-              {/* {books?.content && <PdfViewer fileUrl={books?.content} />} */}
-              <iframe
+              {books?.content && <PdfViewer fileUrl={books.content} />}
+              {/* <iframe
                 className="w-full h-[600px]"
                 src={books?.content}
                 frameBorder="0"
-              ></iframe>
+              ></iframe> */}
               {/* <div className="flex gap-3">
                 <Link
                   //@ts-ignore
